@@ -52,13 +52,13 @@ def test_state_build_errors():
 
     # hack to set ensemble state to too long 1-D array
     nengo.Ensemble.initial_phase.data[ens] = np.array([0.1, 0.2, 0.3])
-    with pytest.raises(BuildError, match="`initial_phase` array must be 0-D, or 1-D"):
+    with pytest.raises(BuildError, match="`initial_phase` array must be 1-D of"):
         with nengo.Simulator(net, progress_bar=False):
             pass
 
     # hack to set ensemble state to 2-D array
     nengo.Ensemble.initial_phase.data[ens] = np.array([[0.1, 0.2]])
-    with pytest.raises(BuildError, match="`initial_phase` array must be 0-D, or 1-D"):
+    with pytest.raises(BuildError, match="`initial_phase` array must be 1-D of"):
         with nengo.Simulator(net, progress_bar=False):
             pass
 
