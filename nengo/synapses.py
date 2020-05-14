@@ -678,11 +678,13 @@ class DiscreteDelay(LinearFilter):
 
     .. testcode::
 
+        from nengo.synapses import DiscreteDelay
+
         dt = 0.001
         with nengo.Network() as model:
             stim = nengo.Node(output=lambda t: np.sin(2*np.pi*t))
             p_stim = nengo.Probe(stim)
-            p_delay = nengo.Probe(stim, synapse=DiscreteDelay(0.3 / dt))
+            p_delay = nengo.Probe(stim, synapse=DiscreteDelay(int(0.3 / dt)))
 
         with nengo.Simulator(model, dt=dt) as sim:
             sim.run(1.)
