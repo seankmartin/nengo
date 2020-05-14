@@ -211,8 +211,6 @@ class LinearFilter(LinearSystem, Synapse):
 
         .. testcode::
 
-           import matplotlib.pyplot as plt
-
            synapse = nengo.synapses.LinearFilter(([1], [0.02, 1]))
            f = np.logspace(-1, 3, 100)
            y = synapse.evaluate(f)
@@ -693,6 +691,11 @@ class DiscreteDelay(LinearFilter):
         plt.plot(sim.trange(), sim.data[p_delay], label="Delayed")
         plt.xlabel("Time (s)")
         plt.legend()
+
+    .. testoutput::
+       :hide:
+
+       ...
     """
 
     steps = IntParam("steps", low=0)
@@ -738,9 +741,6 @@ class LegendreDelay(LinearFilter):
     approximations:
 
     .. testcode::
-
-        import matplotlib.pyplot as plt
-        import nengo
 
         process = nengo.processes.WhiteSignal(10.0, high=15, y0=0)
         u = process.run_steps(500)
