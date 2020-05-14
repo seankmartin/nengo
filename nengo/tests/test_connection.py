@@ -6,7 +6,7 @@ import pytest
 import nengo
 import nengo.utils.numpy as npext
 from nengo.connection import ConnectionSolverParam
-from nengo.dists import Choice, UniformHypersphere
+from nengo.dists import Choice, Uniform, UniformHypersphere
 from nengo.exceptions import BuildError, ValidationError
 from nengo.solvers import LstsqL2
 from nengo.processes import Piecewise
@@ -1187,8 +1187,6 @@ def test_initial_value(synapse, Simulator, seed, plt, allclose):
 
 
 def test_neuron_initial_values(Simulator, seed, rng, plt, allclose):
-    from nengo.dists import UniformHypersphere, Uniform
-
     def encoder_gain_bias(n_neurons, dims, neuron_type, rng):
         encoders = UniformHypersphere(surface=True).sample(n_neurons, dims, rng=rng)
         max_rates = Uniform(150, 250).sample(n_neurons, rng=rng)
@@ -1218,10 +1216,8 @@ def test_neuron_initial_values(Simulator, seed, rng, plt, allclose):
     initial_value_a = neurons0.dot(decoders).dot(encoders1.T)[0]
     initial_value_b = gain1 * initial_value_a  # weight solver weights include gains
 
-    probes = []
     with nengo.Network(seed=seed) as net:
         u = nengo.Node(x0)
-
         ens0 = nengo.Ensemble(
             n_neurons0,
             dims,
