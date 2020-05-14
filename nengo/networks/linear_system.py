@@ -142,7 +142,7 @@ class LinearSystemNetwork(nengo.Network):
     state_output : `.Node`
         The output from the system state.
     output : `.Node`
-        A passthrough `.Node` for retreiving the system output.
+        A passthrough `.Node` for retrieving the system output.
     ss_connections : dict of (str, `.Connection`)
         Dictionary containing a `.Connection` for each of the state-space transform
         matrices "A", "B", "C", and "D". "B" will not be present if the system does
