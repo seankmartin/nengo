@@ -5,6 +5,52 @@ import nengo
 from nengo import params
 from nengo.exceptions import ObsoleteError, ValidationError
 
+# need to test:
+"""tests to make sure ValueError is thrown
+     when get is used on unconfigurable"""
+
+"""
+def test_unconfigurable_value_error():
+    
+    # with pytest.raises(ValueError):
+    class Test:
+        o = params.Parameter("o", default="string", readonly=True)
+
+    inst = Test()
+    # readonly so it is unconfigurable
+"""
+
+
+def test_coerce_value_error():
+    """tests to make sure ValueError is thrown
+     with incorrect coerce usage"""
+    with pytest.raises(ValueError):
+
+        class Test:
+            o = params.Parameter("o", default=None)
+
+        inst = Test()
+
+        inst.o = params.Unconfigurable
+
+
+def test_optional_value_error():
+    """tests to make sure ValueError is thrown when it is not a bool"""
+    with pytest.raises(ValueError):
+        params.Parameter("o", default=None, optional="NotABool")
+
+
+def test_readonly_value_error():
+    """tests to make sure ValueError is thrown when it is not a bool"""
+    with pytest.raises(ValueError):
+        params.Parameter("o", default=None, readonly="NotABool")
+
+
+def test_name_value_error():
+    """tests to make sure ValueError is thrown when it is not a string"""
+    with pytest.raises(ValueError):
+        params.Parameter(123, default=None)  # not string
+
 
 def test_default():
     """A default value is immediately available, but can be overridden."""
