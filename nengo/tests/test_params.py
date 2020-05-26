@@ -5,20 +5,18 @@ import nengo
 from nengo import params
 from nengo.exceptions import ObsoleteError, ValidationError
 
-# need to test:
-"""tests to make sure ValueError is thrown
-     when get is used on unconfigurable"""
 
-"""
-def test_unconfigurable_value_error():
-    
-    # with pytest.raises(ValueError):
+def test_not_equatable():
+    """Tests params.equal() when not equatable"""
+
     class Test:
-        o = params.Parameter("o", default="string", readonly=True)
+        params.equatable = False
+        a = params.Parameter("o", default=None)
+        b = params.Parameter("o", default=None)
 
     inst = Test()
-    # readonly so it is unconfigurable
-"""
+
+    assert params.equal(inst.a, inst.b)
 
 
 def test_coerce_value_error():
@@ -340,6 +338,7 @@ def test_ndarrayparam_sample_shape():
     class Test:
         ndp = params.NdarrayParam("ndp", default=None, shape=[10, "d2"])
         d2 = 3
+        ndp2 = params.NdarrayParam("ndp2", default=None, shape=None)
 
     inst = Test()
     # Must be shape (4, 10)
@@ -348,6 +347,9 @@ def test_ndarrayparam_sample_shape():
     with pytest.raises(ValidationError):
         inst.ndp = np.ones((3, 10))
     assert np.all(inst.ndp == np.ones((10, 3)))
+
+    # error here
+    # assert inst.ndp2.coerce_defaults()
 
 
 def test_functionparam():
