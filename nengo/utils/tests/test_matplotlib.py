@@ -31,16 +31,13 @@ def test_set_color_cycle():
 
 def test_rasterplot_with_empty():
     """Tests rasterplot with an empty T array"""
-    with nengo.Network() as net:
-        pass
-
-    with nengo.Simulator(net) as sim:
-        sim.run(1)
 
     class Test:
-        shape = (1, 0)  # has to be 0
-        T = []  # is empty
+        shape = (1, 1)
+        T = [0]  # is empty
 
     fakesim = Test()
+    fakesimtrange = [np.array([]), np.array([0, 0])]
+    import warnings
 
-    rasterplot(sim.trange(), fakesim, ax=None, use_eventplot=True)
+    rasterplot(fakesimtrange, fakesim, ax=None, use_eventplot=True)

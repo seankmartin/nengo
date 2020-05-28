@@ -7,18 +7,40 @@ from nengo.exceptions import ConfigError, ReadonlyError
 from nengo.params import Default, Parameter, Unconfigurable
 from nengo.utils.testing import ThreadedAssertion
 
-# need to test:
 
-
-def test_underscore_del_class_params_exception():
-    """test that exception is raised for class params that start with underscore"""
-    # with pytest.raises(Exception):
+def test_instanceparams__str():
+    """test the repr function in InstanceParams class"""
     model = nengo.Network()
-    model.config[nengo.Ensemble]._uscore = "_uscore"
+    with model:
+        a = nengo.Ensemble(50, dimensions=1, label="test")
+    assert str(model.config[a]) == 'Parameters set for <Ensemble "test">:'
+
+
+def test_instanceparams_repr():
+    """test the repr function in InstanceParams class"""
+    model = nengo.Network()
+    with model:
+        a = nengo.Ensemble(50, dimensions=1, label="test")
+    assert repr(model.config[a]) == '<InstanceParams[<Ensemble "test">]{}>'
+
+
+def test_instanceparams_contains():
+    """test the contains function in InstanceParams class"""
+    model = nengo.Network()
+    model.config[nengo.Ensemble].set_param("containstest", Parameter("test", None))
     with model:
         a = nengo.Ensemble(50, dimensions=1)
-    model.config[nengo.Ensemble].__delattr__("_uscore")
-    assert not (hasattr(model.config[nengo.Ensemble], "_uscore"))
+    "containstest" in model.config[a]
+
+
+def test_instanceparams_delattr_configerror():
+    """test built in params on the delattr function in InstanceParams class"""
+    with pytest.raises(ConfigError):
+        model = nengo.Network()
+        model.config[nengo.Ensemble].set_param("containstest", Parameter("test", None))
+        with model:
+            a = nengo.Ensemble(50, dimensions=1)
+        model.config[a].__delattr__("bias")
 
 
 def test_underscore_del_instance_params_exception():
@@ -31,25 +53,14 @@ def test_underscore_del_instance_params_exception():
         del model.config[a]._uscore
 
 
-def test_not_configurable_configerror(request):
+def test_not_configurable_configerror():
     """test that exception is raised when
     using settattr on something that is not configurable"""
-
-    # def finalizer():
-    #     del model.config[nengo.Ensemble].something
-
-    # request.addfinalizer(finalizer)
     with pytest.raises(ConfigError):
         model = nengo.Network()
         my_param = Parameter("something", Unconfigurable)
 
         model.config[nengo.Ensemble].set_param("something", my_param)
-        with model:
-            a = nengo.Ensemble(50, dimensions=1)
-
-        # nengo.exceptions.ConfigError: Cannot get parameters on an instance;
-        # use 'config[Ensemble].get_param' instead. I don't understand the right
-        # way to do this
         model.config[nengo.Ensemble].something = "other"
 
 

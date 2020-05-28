@@ -1,7 +1,4 @@
 import os
-import pytest
-
-import nengo
 from nengo import rc
 
 
@@ -53,7 +50,3 @@ def test_read_file():
     fp2.close()
 
     rc.read_file(fp3, filename=None)
-
-
-# cannot test for this, because it gives a weird error when it works, and when it doesn't
-# different exceptions need to be tested for, with test_list being invalid and not.

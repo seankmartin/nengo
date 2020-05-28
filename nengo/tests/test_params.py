@@ -10,13 +10,16 @@ def test_not_equatable():
     """Tests params.equal() when not equatable"""
 
     class Test:
-        params.equatable = False
+        equatable = False
         a = params.Parameter("o", default=None)
         b = params.Parameter("o", default=None)
 
+        def __get__(self, instance, value):
+            return instance
+
     inst = Test()
 
-    assert params.equal(inst.a, inst.b)
+    assert params.Parameter.equal(inst, inst.a, inst.b)
 
 
 def test_coerce_value_error():

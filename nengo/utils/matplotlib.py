@@ -200,25 +200,3 @@ def rasterplot(time, spikes, ax=None, use_eventplot=False, **kwargs):  # noqa
     ax.yaxis.set_ticks_position("none")
 
     return ax
-
-
-# This command does not appear to be used
-
-# def plot_tuning_curves(ensemble, sim, connection=None, ax=None):
-#     """Plot tuning curves for the given ensemble and simulator.
-
-#     If a connection is provided, the decoders will be used to set
-#     the colours of the tuning curves.
-#     """
-
-#     if ax is None:
-#         ax = plt.gca()
-
-#     evals, t_curves = tuning_curves(ensemble, sim)
-
-#     if connection is not None:
-#         if connection.dimensions > 1:
-#             warnings.warn("Ignoring dimensions > 1 in plot_tuning_curves")
-#         cm = plt.cm.ScalarMappable(cmap=plt.cm.coolwarm)
-#         set_color_cycle(cm.to_rgba(sim.data[connection].decoders[0]), ax=ax)
-#     ax.plot(evals, t_curves)
