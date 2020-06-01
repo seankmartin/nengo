@@ -352,7 +352,7 @@ def test_copy_instance_params():
 
         pkls = pickle.dumps(ens)
 
-        pkl = pickle.loads(pkls)
+        pickle.loads(pkls)
         # I made a pickle thing, and it doesn’t run the line
         # if self in param:
 

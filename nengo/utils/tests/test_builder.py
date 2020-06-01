@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 import nengo
-from nengo.exceptions import MovedError, Unconvertible, ValidationError, Unconvertible
+from nengo.exceptions import MovedError, ValidationError, Unconvertible
 from nengo.transforms import NoTransform, Dense
 from nengo.utils.builder import (
     full_transform,
