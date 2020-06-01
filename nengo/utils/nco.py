@@ -150,11 +150,17 @@ def read(fileobj):
     magic, version, pickle_start, pickle_end, array_start, array_end = struct.unpack(
         HEADER_FORMAT, header
     )
+    import warnings
+
+    warnings.warn(str(magic))
+    warnings.warn(str(MAGIC_STRING))
 
     if magic != MAGIC_STRING:
         raise CacheIOError("Not a Nengo cache object file.")
     if version not in SUPPORTED_PROTOCOLS:
-        raise CacheIOError("NCO protocol version {} is not supported.".format(version))
+        raise CacheIOError(
+            "NCO protocol version {} is not supported.".format(version)
+        )  # pragma: no cover
 
     metadata = pickle.load(Subfile(fileobj, pickle_start, pickle_end))
     array = np.load(Subfile(fileobj, array_start, array_end))

@@ -114,7 +114,6 @@ def test_zpk2ss():
     )
 
     assert repr(zpk2ss([1], [1, 2], 3)) == repr(predicted)
-    # this or allclose()?
 
 
 def test_ss2zpk():

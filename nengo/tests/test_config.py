@@ -37,7 +37,6 @@ def test_instanceparams_delattr_configerror():
     """test built in params on the delattr function in InstanceParams class"""
     with pytest.raises(ConfigError):
         model = nengo.Network()
-        model.config[nengo.Ensemble].set_param("containstest", Parameter("test", None))
         with model:
             a = nengo.Ensemble(50, dimensions=1)
         model.config[a].__delattr__("bias")
@@ -62,6 +61,19 @@ def test_not_configurable_configerror():
 
         model.config[nengo.Ensemble].set_param("something", my_param)
         model.config[nengo.Ensemble].something = "other"
+
+
+def test_underscore_del_class_params_exception(request):
+    """test that exception is raised when
+    using parameters that start with underscore in class params"""
+    model = nengo.Network()
+    my_param = Parameter("_uscore")
+
+    model.config[nengo.Ensemble].set_param("_uscore", my_param)
+
+    model.config[nengo.Ensemble]._uscore = "other"
+
+    del model.config[nengo.Ensemble]._uscore
 
 
 def test_reuse_parameters_configerror(request):

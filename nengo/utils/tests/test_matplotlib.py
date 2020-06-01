@@ -38,6 +38,5 @@ def test_rasterplot_with_empty():
 
     fakesim = Test()
     fakesimtrange = [np.array([]), np.array([0, 0])]
-    import warnings
 
     rasterplot(fakesimtrange, fakesim, ax=None, use_eventplot=True)

@@ -218,8 +218,16 @@ class InstanceParams:
 
         for key in iter_params(self._configures):
             param = self._clsparams.get_param(key)
+            import warnings
+
+            warnings.warn("param: " + str(param))
+
+            warnings.warn("self: " + str(self))
             if self in param:
                 state[key] = param.__get__(self, type(self))
+                import warnings
+
+                warnings.warn("Win")
 
         state.update(self.__dict__)
         return state

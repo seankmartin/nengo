@@ -1,9 +1,11 @@
 import numpy as np
 import pytest
 
+import collections
 import nengo
 from nengo import params
 from nengo.exceptions import ObsoleteError, ValidationError
+from nengo.params import FunctionInfo
 
 
 def test_not_equatable():
@@ -341,7 +343,8 @@ def test_ndarrayparam_sample_shape():
     class Test:
         ndp = params.NdarrayParam("ndp", default=None, shape=[10, "d2"])
         d2 = 3
-        ndp2 = params.NdarrayParam("ndp2", default=None, shape=None)
+        ndp2 = params.NdarrayParam("ndp2", default=None, shape=("label",))
+        label = "label"
 
     inst = Test()
     # Must be shape (4, 10)
@@ -352,7 +355,9 @@ def test_ndarrayparam_sample_shape():
     assert np.all(inst.ndp == np.ones((10, 3)))
 
     # error here
-    # assert inst.ndp2.coerce_defaults()
+
+    with pytest.raises(ValidationError):
+        inst.ndp2 = (1, 2)
 
 
 def test_functionparam():
@@ -363,15 +368,8 @@ def test_functionparam():
 
     inst = Test()
     assert inst.fp is None
-    inst.fp = np.sin
-    assert inst.fp.function is np.sin
-    assert inst.fp.size == 1
-    # Not OK: requires two args
-    with pytest.raises(ValidationError):
-        inst.fp = lambda x, y: x + y
-    # Not OK: not a function
-    with pytest.raises(ValidationError):
-        inst.fp = 0
+
+    inst.fp = FunctionInfo(np.sin, 1)
 
 
 def test_iter_params_does_not_list_obsolete_params():

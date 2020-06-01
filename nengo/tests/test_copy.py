@@ -350,6 +350,12 @@ def test_copy_instance_params():
         ens = nengo.Ensemble(10, 1)
         original.config[ens].test = 42
 
+        pkls = pickle.dumps(ens)
+
+        pkl = pickle.loads(pkls)
+        # I made a pickle thing, and it doesn’t run the line
+        # if self in param:
+
     cp = original.copy()
     assert cp.config[cp.ensembles[0]].test == 42
 

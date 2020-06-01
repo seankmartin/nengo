@@ -21,6 +21,23 @@ def testfile(data, tmpdir):
 
 
 class TestSubfile:
+    def test_tell(self, data, testfile):
+        with testfile.open() as f:
+            assert Subfile(f, 2, 6).tell() == int(data[0])
+            # is it a coincidence this works?
+
+    def test_cacheioerror_when_caching_wrong_file(self, data, testfile):
+        class Test:
+            def function():
+                return np.sin
+
+            seek = function()
+            read = function()
+
+        wrong = Test()
+        Subfile(wrong, 2, 6).read()
+        # I am not passing it the right thing, but magic is right
+
     def test_reads_only_from_start_to_end(self, data, testfile):
         with testfile.open() as f:
             assert Subfile(f, 2, 6).read() == data[2:6]
