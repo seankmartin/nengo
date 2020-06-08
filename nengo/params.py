@@ -454,13 +454,7 @@ class NdarrayParam(Parameter):
 
     @property
     def coerce_defaults(self):
-        import warnings
-
-        warnings.warn("coerceing your defaults")
         if self.shape is None:
-            import warnings
-
-            warnings.warn("IT WORKS")
             return True
         return all(is_integer(dim) or dim in ("...", "*") for dim in self.shape)
 
