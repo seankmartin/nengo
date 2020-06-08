@@ -56,6 +56,9 @@ def test_normalize():
         a = [1]
         b = [0]
         normalize(b, a)
+    a = [1]
+    b = [0, 0, 0]
+    normalize(b, a)
 
 
 def test_tf2ss():

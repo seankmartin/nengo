@@ -138,6 +138,9 @@ def test_weakkeydefaultdict():
     assert o not in d
 
     d[o] = "changed"
+    for index in d:
+        assert index == o
+    del index
     del o
     assert len(d) == 0
 
@@ -208,6 +211,38 @@ def test_weakkeydict_update():
         assert v is d.get(k)
 
 
+def test_weakkeyiddict_contains():
+    d = WeakKeyIDDictionary()
+    assert (None in d) is False
+
+
+def test_weakkeyiddict_iter_functions():
+    """Tests iterkeys and iteritems"""
+    d = WeakKeyIDDictionary()
+    in_d = {C(): 1, C(): 2, C(): 3}
+    d.update(in_d)
+    assert repr(d.iterkeys()).startswith(repr(d._keyrefs.values())[0:43])
+
+    results = list(d.iteritems())
+    start = "(<nengo.utils.tests.test_stdlib.C object "
+    end = [
+        "1)",
+        "2)",
+        "3)",
+    ]
+    for i in range(len(results)):
+        assert str(results[i]).startswith(start)
+        assert str(results[i]).endswith(end[i])
+
+
+def test_weakkeyiddict_update_kwargs():
+    """tests weakkeyiddict_update"""
+    d = WeakKeyIDDictionary()
+    # d.update(in_dict=None, keyrefs=1)
+    # the word keyrefs is passed as a string to weakref.ref, but weakref can't use strings
+    # TODO: should update, except kwargs
+
+
 def test_weakkeydict_delitem():
     d = WeakKeyIDDictionary()
     o1 = C()
@@ -267,3 +302,11 @@ def test_weakset():
     s.add(k)
     del k
     assert len(s) == 0
+
+    class Dict(dict):
+        pass
+
+    # obj = Dict(red=1, green=2, blue=3)  # this object is weak referenceable
+    # s = WeakSet(obj)
+    # the word red is passed as a string to weakref.ref, but weakref can't use strings
+    # TODO: should update, except kwargs

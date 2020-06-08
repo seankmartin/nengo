@@ -1,8 +1,106 @@
 import inspect
 
-from nengo.utils.magic import decorator
+from nengo.utils.magic import (
+    decorator,
+    ObjectProxyMethods,
+    ObjectProxy,
+    BoundFunctionWrapper,
+    decorator,
+)
 
 state = None  # Used to make sure decorators are running
+
+
+def test_decorator():
+    class Test:
+        instance = "Not None"
+
+        @decorator
+        def myMethod(self):
+            pass
+
+    # TODO: debug some stuff about the decorator, since lines 263-265 arent run
+    # wrapped = Test()
+    # wrapped.myMethod()
+    # Cant figure out how to get instance to be None
+
+
+def test_objectproxymethods():
+    """tests funcions of ObjectProxyMethods"""
+    assert str(ObjectProxyMethods.__module__).startswith("<property object at ")
+
+    assert str(ObjectProxyMethods.__dict__).startswith(
+        "{'__module__': <property object at "
+    )
+
+
+def test_objectproxy():
+    """tests funcions of ObjectProxy"""
+    assert (
+        str(dir(ObjectProxy)) == "['__annotations__', '__class__', '__delattr__',"
+        " '__dict__', '__dir__', '__doc__', '__eq__', '__format__',"
+        " '__ge__', '__getattr__', '__getattribute__', '__gt__', '__hash__',"
+        " '__init__', '__init_subclass__', '__le__', '__lt__', '__module__',"
+        " '__name__', '__ne__', '__new__', '__reduce__', '__reduce_ex__',"
+        " '__repr__', '__setattr__', '__sizeof__', '__slots__', '__str__',"
+        " '__subclasshook__', '__weakref__', '__wrapped__']"
+    )
+    # how do I test for hash?
+    my_proxy = ObjectProxy
+    assert hash(my_proxy) == hash(my_proxy)
+
+    ObjectProxy.testattr = 1
+    assert ObjectProxy.testattr == 1
+    instance = ObjectProxy(1)
+    assert str(instance) == "1"
+
+    # startswith
+    assert repr(instance).startswith("<ObjectProxy at ")
+
+
+def test_boundfunctionwrapper():
+    """tests funcions of BoundFunctionWrapper"""
+
+    class MyParentHelper:
+        def __get__(self, a, b=None):
+            return 0
+
+    class MyParent:
+        __wrapped__ = MyParentHelper
+
+    class MyWrapped:
+        value = 1
+
+    class MyFunction:
+        def __init__(self, b, c, d, e):
+            return None
+
+        def __call__(self, b):
+            return True
+
+    function = MyFunction
+
+    wrapped = MyWrapped
+    parent = MyParent
+
+    instance = BoundFunctionWrapper(wrapped, None, function, "function", parent)
+
+    assert (
+        str(BoundFunctionWrapper.__get__(instance, instance, BoundFunctionWrapper))
+        == "0"
+    )
+
+    instance2 = BoundFunctionWrapper(wrapped, "Not None", 1, "function", parent)
+
+    assert (
+        str(BoundFunctionWrapper.__get__(instance2, instance2, BoundFunctionWrapper))
+        == "<class 'nengo.utils.tests.test_magic.test_boundfunctionwrapper.<locals>.MyWrapped'>"
+    )
+
+    assert str(instance(1, 2)).startswith(
+        "<nengo.utils.tests.test_magic."
+        "test_boundfunctionwrapper.<locals>.MyFunction object at "
+    )
 
 
 def _test_decorated(obj):

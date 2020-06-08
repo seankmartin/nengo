@@ -7,7 +7,7 @@ import pytest
 import nengo
 from nengo import spa
 from nengo.exceptions import NetworkContextError, NotAddedToNetworkWarning
-from nengo.params import IntParam, iter_params
+from nengo.params import IntParam, iter_params, NdarrayParam
 from nengo.utils.numpy import is_array_like
 from nengo.utils.progress import TerminalProgressBar
 
@@ -347,17 +347,24 @@ def test_copy_instance_params():
         original.config[nengo.Ensemble].set_param(
             "test", IntParam("test", optional=True)
         )
+
+        original.config[nengo.Ensemble].set_param(
+            "test2", NdarrayParam("test2", optional=True)
+        )
+        # What is intparam, how to search all of nengo for it
         ens = nengo.Ensemble(10, 1)
-        original.config[ens].test = 42
+        original.config[ens].test = 42  # [original]
 
-        pkls = pickle.dumps(ens)
+        original.config[ens].test2 = np.array([original])
+        # assert original in original.config[nengo.Ensemble].get_param("test")
 
-        pickle.loads(pkls)
-        # I made a pickle thing, and it doesn’t run the line
-        # if self in param:
+    pkls = pickle.dumps(original)
+
+    pickle.loads(pkls)
+
+    assert original in original.config[ens].test2
 
     cp = original.copy()
-    assert cp.config[cp.ensembles[0]].test == 42
 
 
 def test_pickle_model(Simulator, seed, allclose):

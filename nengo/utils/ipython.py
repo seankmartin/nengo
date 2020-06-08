@@ -9,9 +9,9 @@ try:
     from IPython import get_ipython
     from IPython.display import HTML
 
-    if IPython.version_info[0] <= 3:
+    if IPython.version_info[0] <= 3:  # pragma: no cover
         from IPython.nbconvert import PythonExporter
-    else:
+    else:  # pragma: no cover
         from nbconvert import PythonExporter
 
     if IPython.version_info[0] <= 3:

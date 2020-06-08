@@ -1,10 +1,13 @@
 import os
 
+import struct
+
 import numpy as np
 from numpy.testing import assert_equal
 import pytest
 
 import nengo.utils.nco as nco
+from nengo.exceptions import CacheIOError
 from nengo.utils.nco import Subfile
 
 
@@ -27,16 +30,13 @@ class TestSubfile:
             # is it a coincidence this works?
 
     def test_cacheioerror_when_caching_wrong_file(self, data, testfile):
-        class Test:
-            def function():
-                return np.sin
+        class FakeFile:
+            def read(self, a):
+                return bytes(20)
 
-            seek = function()
-            read = function()
-
-        wrong = Test()
-        Subfile(wrong, 2, 6).read()
-        # I am not passing it the right thing, but magic is right
+        myfakefile = FakeFile()
+        with pytest.raises(CacheIOError):
+            nco.read(myfakefile)
 
     def test_reads_only_from_start_to_end(self, data, testfile):
         with testfile.open() as f:
