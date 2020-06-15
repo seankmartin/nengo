@@ -30,7 +30,7 @@ def test_write_progress_to_file():
         def __init__(self, isfinished):
             self.finished = isfinished
 
-        def myFunction(a):
+        def myFunction(self):
             return 1
 
         progress = 0
@@ -146,12 +146,12 @@ class TestAutoProgressBar:
         auto_progress.update(progress_mock)
         assert progress_bar.n_update_calls >= 1
         rc.set("progress", "progress_bar", "False")
-        assert rc.getboolean("progress", "progress_bar") == False
+        assert not rc.getboolean("progress", "progress_bar")
         assert str(get_default_progressbar()).startswith(
             "<nengo.utils.progress.NoProgressBar object at "
         )
         rc.set("progress", "progress_bar", "True")
-        assert rc.getboolean("progress", "progress_bar") == True
+        assert rc.getboolean("progress", "progress_bar")
         assert str(get_default_progressbar()).startswith(
             "<nengo.utils.progress.AutoProgressBar object at "
         )

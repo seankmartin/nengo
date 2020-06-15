@@ -237,9 +237,10 @@ def test_weakkeyiddict_iter_functions():
 
 def test_weakkeyiddict_update_kwargs():
     """tests weakkeyiddict_update"""
-    d = WeakKeyIDDictionary()
+    WeakKeyIDDictionary()  # d =
     # d.update(in_dict=None, keyrefs=1)
-    # the word keyrefs is passed as a string to weakref.ref, but weakref can't use strings
+    # the word keyrefs is passed as a string to weakref.ref,
+    # but weakref can't use strings
     # TODO: should update, except kwargs
 
 

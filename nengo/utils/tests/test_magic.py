@@ -5,7 +5,6 @@ from nengo.utils.magic import (
     ObjectProxyMethods,
     ObjectProxy,
     BoundFunctionWrapper,
-    decorator,
 )
 
 state = None  # Used to make sure decorators are running
@@ -94,7 +93,8 @@ def test_boundfunctionwrapper():
 
     assert (
         str(BoundFunctionWrapper.__get__(instance2, instance2, BoundFunctionWrapper))
-        == "<class 'nengo.utils.tests.test_magic.test_boundfunctionwrapper.<locals>.MyWrapped'>"
+        == "<class 'nengo.utils.tests.test_magic"
+        ".test_boundfunctionwrapper.<locals>.MyWrapped'>"
     )
 
     assert str(instance(1, 2)).startswith(

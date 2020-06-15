@@ -1,4 +1,3 @@
-import nengo
 from nengo.utils.ipython import check_ipy_version
 
 

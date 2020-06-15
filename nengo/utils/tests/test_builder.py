@@ -67,8 +67,6 @@ def test_full_transform():
             shape = (1, 1)
             init = np.array([[[1], [2], [3]]])
 
-        # FakeDense is not good enough
-
         class Test2:
             transform = FakeDense()  # Dense((1, 1), init=9)
             function = 0

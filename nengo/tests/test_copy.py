@@ -351,20 +351,26 @@ def test_copy_instance_params():
         original.config[nengo.Ensemble].set_param(
             "test2", NdarrayParam("test2", optional=True)
         )
-        # What is intparam, how to search all of nengo for it
+        # THESE ARE THE WRONG TYPE OF PARAMS ^
+        # The right type of params are created on init, how do I edit those?
+
+        # TODO: figure out why this isn't hitting line 221 of config.py
+
+        original.config[nengo.Ensemble].set_param("key", IntParam("key", optional=True))
+
         ens = nengo.Ensemble(10, 1)
         original.config[ens].test = 42  # [original]
 
         original.config[ens].test2 = np.array([original])
         # assert original in original.config[nengo.Ensemble].get_param("test")
-
+    # original.config[ens].__setattr__("key", original)
     pkls = pickle.dumps(original)
 
     pickle.loads(pkls)
 
     assert original in original.config[ens].test2
 
-    cp = original.copy()
+    # cp = original.copy()
 
 
 def test_pickle_model(Simulator, seed, allclose):

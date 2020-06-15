@@ -1,4 +1,3 @@
-import collections
 import numpy as np
 import pytest
 
@@ -11,20 +10,19 @@ from nengo.params import FunctionInfo
 
 def test_ndarrayparam_coerce_defaults():
     """Tests NdarrayParam coerce_defaults if shape is none"""
-    my_param = params.Parameter("something", params.Unconfigurable)
     params.NdarrayParam.shape = None
-    # assert params.NdarrayParam.coerce_defaults() is True
-    # TypeError: 'property' object is not callable,
-    # cant find anywhere else that calls coerce_defaults()
-    # but some lines in it are being run?
+    assert params.NdarrayParam("name").coerce_defaults is True
 
 
 def test_parameter_get_error():
     """Tests params get ValidationError"""
-    my_param = params.Parameter("something", params.Unconfigurable)
+
+    class Test:
+        p = params.Parameter("something", params.Unconfigurable)
+
+    inst = Test()
     with pytest.raises(ValidationError):
-        params.Parameter.__get__(my_param, my_param, my_param)
-        # I cant figure out the nice way to do this
+        inst.p
 
 
 def test_parameter_set_default_error():

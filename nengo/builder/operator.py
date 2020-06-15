@@ -514,15 +514,19 @@ def reshape_dot(A, X, Y, tag=None):
     badshape = False
     ashape = (1,) if A.shape == () else A.shape
     xshape = (1,) if X.shape == () else X.shape
+    import warnings
 
     if A.shape == ():
         incshape = X.shape
+        warnings.warn("ending 1")
     elif X.shape == ():
         incshape = A.shape
+        warnings.warn("ending 2")
     elif X.ndim == 1:
         badshape = ashape[-1] != xshape[0]
         incshape = ashape[:-1]
     else:
+        warnings.warn("ending 3")
         badshape = ashape[-1] != xshape[-2]
         incshape = ashape[:-1] + xshape[:-2] + xshape[-1:]
 

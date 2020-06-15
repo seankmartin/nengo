@@ -66,10 +66,10 @@ def test_signals_allclose(multiple_targets, rng):
             plot = my_function2
             legend = my_function3
 
-            def set_ylabel(signal):
+            def set_ylabel(self):
                 return True
 
-            def set_xlabel(signal):
+            def set_xlabel(self):
                 return True
 
         def my_function(a, b, c):
@@ -100,9 +100,8 @@ def test_threadedassertion_errors():
     with pytest.raises(AttributeError):
         ThreadedAssertion(1)
     a = ThreadedAssertion(0)
-    # there is some magic going on here to access the run command and get the specific error I want
-
-    import enum
+    # there is some magic going on here to
+    # access the run command and get the specific error I want
 
     def function(a, b):
         return "string"

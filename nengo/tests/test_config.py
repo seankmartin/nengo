@@ -8,16 +8,39 @@ from nengo.params import Default, Parameter, Unconfigurable
 from nengo.utils.testing import ThreadedAssertion
 
 
-def test_instanceparams__str():
-    """test the repr function in InstanceParams class"""
+def test_config_repr():
+    """tests the repr function in Config class"""
+    model = nengo.Network()
+    with model:
+        assert repr(model.config) == "<Config(Connection, Ensemble, Node, Probe)>"
+
+
+def test_config_exit():
+    """tests the exit function in Config class"""
+    model = nengo.Network()
+    model2 = nengo.Network()
+    with model:
+        with pytest.raises(ConfigError):
+            model.config.__enter__()
+            model2.config.__exit__(0, 0, 0)
+
+    with pytest.raises(ConfigError):
+        with (model.config):
+            model.config.context.clear()
+
+
+def test_instanceparams_str():
+    """tests the str function in InstanceParams class"""
     model = nengo.Network()
     with model:
         a = nengo.Ensemble(50, dimensions=1, label="test")
     assert str(model.config[a]) == 'Parameters set for <Ensemble "test">:'
+    # The right type of params are created on init, how do I edit those?
+    # TODO: figure out why this isn't working
 
 
 def test_instanceparams_repr():
-    """test the repr function in InstanceParams class"""
+    """tests the repr function in InstanceParams class"""
     model = nengo.Network()
     with model:
         a = nengo.Ensemble(50, dimensions=1, label="test")
@@ -25,7 +48,7 @@ def test_instanceparams_repr():
 
 
 def test_instanceparams_contains():
-    """test the contains function in InstanceParams class"""
+    """tests the contains function in InstanceParams class"""
     model = nengo.Network()
     model.config[nengo.Ensemble].set_param("containstest", Parameter("test", None))
     with model:
@@ -34,7 +57,7 @@ def test_instanceparams_contains():
 
 
 def test_instanceparams_delattr_configerror():
-    """test built in params on the delattr function in InstanceParams class"""
+    """tests built in params on the delattr function in InstanceParams class"""
     with pytest.raises(ConfigError):
         model = nengo.Network()
         with model:
@@ -43,7 +66,7 @@ def test_instanceparams_delattr_configerror():
 
 
 def test_underscore_del_instance_params_exception():
-    """test that exception is raised for instance params that start with underscore"""
+    """tests that exception is raised for instance params that start with underscore"""
     with pytest.raises(Exception):
         model = nengo.Network()
         model.config[nengo.Ensemble].set_param("_uscore", Parameter("_uscore", None))
@@ -53,7 +76,7 @@ def test_underscore_del_instance_params_exception():
 
 
 def test_not_configurable_configerror():
-    """test that exception is raised when
+    """tests that exception is raised when
     using settattr on something that is not configurable"""
     with pytest.raises(ConfigError):
         model = nengo.Network()

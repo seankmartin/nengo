@@ -5,8 +5,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-from nengo.utils.ensemble import tuning_curves
-
 has_prop_cycle = LooseVersion(matplotlib.__version__) >= "1.5.0"
 
 if has_prop_cycle:

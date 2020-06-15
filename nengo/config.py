@@ -217,7 +217,14 @@ class InstanceParams:
         state = {}
 
         for key in iter_params(self._configures):
+            param = self._clsparams.get_param(key)
+            # import warnings
+
+            # warnings.warn(str(param))  # < the right type of params
             if self in param:
+                # import warnings
+
+                # warnings.warn("ending 1")
                 state[key] = param.__get__(self, type(self))
 
         state.update(self.__dict__)
@@ -247,6 +254,9 @@ class InstanceParams:
         lines = ["Parameters set for %s:" % str(self._configures)]
         for attr in self._clsparams.params:
             if self in self._clsparams.get_param(attr):
+                # import warnings
+
+                # warnings.warn("end")
                 lines.append("  %s: %s" % (attr, getattr(self, attr)))
         return "\n".join(lines)
 
