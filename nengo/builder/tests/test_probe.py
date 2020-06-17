@@ -31,7 +31,8 @@ def test_signal_probe(seed):
 
     probe = FakeProbe()
     key = 1
-    model.sig[probe.obj][key] = [1, 2]
+    # model.sig[probe.obj][key] = [1, 2]
     # code is looking for an indexerror, but keyerror is given
     # if line above this is commented out
-    signal_probe(model, key, probe)
+    with pytest.raises(BuildError):
+        signal_probe(model, key, probe)

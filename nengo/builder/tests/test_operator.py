@@ -39,8 +39,8 @@ def test_elementwiseinc_builderror(rng):
 
 def test_reshape_dot(rng):
     """tests the reshape_dot function"""
-    A = np.array([])
-    # assert (A.shape) == ()
+    A = np.array(1)
+    assert (A.shape) == ()
     # This assertion is false, is this intended, should I make my own class where shape is ()?
     reshape_dot(np.array([]), np.array([]), np.array([]))
 

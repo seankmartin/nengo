@@ -8,6 +8,17 @@ from nengo.params import Default, Parameter, Unconfigurable
 from nengo.utils.testing import ThreadedAssertion
 
 
+def test_classparams_repr():
+    """tests the repr function in classparams class"""
+    model = nengo.Network()
+    with model:
+        model.config[nengo.Ensemble].set_param("containstest", Parameter("test", None))
+        assert (
+            repr(model.config[nengo.Ensemble])
+            == "<ClassParams[Ensemble]{containstest: None}>"
+        )
+
+
 def test_config_repr():
     """tests the repr function in Config class"""
     model = nengo.Network()
@@ -44,7 +55,11 @@ def test_instanceparams_repr():
     model = nengo.Network()
     with model:
         a = nengo.Ensemble(50, dimensions=1, label="test")
-    assert repr(model.config[a]) == '<InstanceParams[<Ensemble "test">]{}>'
+        # model.config[nengo.Ensemble].set_param("test", None)
+        model.config[nengo.Ensemble].set_param("test", nengo.params.Parameter("test"))
+        model.config[a].test = "test"
+        # Cannot set parameters on an instance, how do I fill up self._clsparams.params
+    assert repr(model.config[a]) == '<InstanceParams[<Ensemble "test">]{test: test}>'
 
 
 def test_instanceparams_contains():

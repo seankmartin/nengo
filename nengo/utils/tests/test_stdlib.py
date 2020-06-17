@@ -304,9 +304,8 @@ def test_weakset():
     del k
     assert len(s) == 0
 
-    class Dict(dict):
-        pass
-
+    # class Dict(dict):
+    #     pass
     # obj = Dict(red=1, green=2, blue=3)  # this object is weak referenceable
     # s = WeakSet(obj)
     # the word red is passed as a string to weakref.ref, but weakref can't use strings

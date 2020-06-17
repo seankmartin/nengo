@@ -67,15 +67,25 @@ def test_build_errors_1(seed, rng):
         model.sig[conn.pre_obj] = []
         build_connection(model, conn)
 
+    with nengo.Network(seed=seed) as net:
+        conn = nengo.Connection(
+            nengo.Ensemble(60, 1), nengo.Ensemble(50, 1), function=func
+        )
+
+    model = Model()
+    model.build(net)
+
     with nengo.Network() as net:
         ens = nengo.Ensemble(1, 1, gain=np.array([0]), bias=np.array([-10]))
         conn = nengo.Connection(ens, ens)
         # What is this code doing?
-        # model = Model()
 
-        # model.params[conn.pre_obj] = Test()
-        # build_linear_system(model, conn, rng)
-        # ^ this code gives memory error at 96 in connection.py
+        model.params[conn.pre_obj] = Test()
+
+        conn.eval_points = [[0]]
+
+        with pytest.raises(AssertionError):
+            build_linear_system(model, conn, rng)
 
 
 def test_build_errors_2(Simulator, seed, rng, plt, allclose):
@@ -88,8 +98,13 @@ def test_build_errors_2(Simulator, seed, rng, plt, allclose):
         b = nengo.Ensemble(n, dimensions=2)
         nengo.Connection(u, a)
 
-        nengo.Connection(a.neurons, b.neurons, transform=1)
-        # What is this code doing?
+        nengo.Connection(
+            a.neurons, b.neurons, transform=1, learning_rule_type=nengo.BCM()
+        )
+
+    with pytest.raises(BuildError):
+        with Simulator(m):
+            pass
 
 
 def test_build_linear_system(seed, rng, plt, allclose):

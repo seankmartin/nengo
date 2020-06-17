@@ -26,34 +26,47 @@ def test_decorator():
 
 def test_objectproxymethods():
     """tests funcions of ObjectProxyMethods"""
-    assert str(ObjectProxyMethods.__module__).startswith("<property object at ")
+    my_obj = ObjectProxyMethods()
 
-    assert str(ObjectProxyMethods.__dict__).startswith(
-        "{'__module__': <property object at "
-    )
+    class Test:
+        __module__ = None
+        __dict__ = None
+
+    my_obj.__wrapped__ = Test()
+
+    test = my_obj.__module__
+    assert test is None
+
+    test = my_obj.__dict__
+    assert test is None
 
 
 def test_objectproxy():
     """tests funcions of ObjectProxy"""
+
+    class Test:
+        __module__ = None
+        __dict__ = None
+
+    my_proxy = ObjectProxy(Test())
     assert (
-        str(dir(ObjectProxy)) == "['__annotations__', '__class__', '__delattr__',"
-        " '__dict__', '__dir__', '__doc__', '__eq__', '__format__',"
-        " '__ge__', '__getattr__', '__getattribute__', '__gt__', '__hash__',"
-        " '__init__', '__init_subclass__', '__le__', '__lt__', '__module__',"
-        " '__name__', '__ne__', '__new__', '__reduce__', '__reduce_ex__',"
-        " '__repr__', '__setattr__', '__sizeof__', '__slots__', '__str__',"
-        " '__subclasshook__', '__weakref__', '__wrapped__']"
+        str(dir(my_proxy))
+        == "['__class__', '__delattr__', '__dict__', '__dir__', '__doc__',"
+        " '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__',"
+        " '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__',"
+        " '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__',"
+        " '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']"
     )
     # how do I test for hash?
-    my_proxy = ObjectProxy
+    my_proxy = ObjectProxy(Test())
     assert hash(my_proxy) == hash(my_proxy)
 
-    ObjectProxy.testattr = 1
-    assert ObjectProxy.testattr == 1
+    my_proxy.test = 1
+    assert my_proxy.test == 1
+
     instance = ObjectProxy(1)
     assert str(instance) == "1"
 
-    # startswith
     assert repr(instance).startswith("<ObjectProxy at ")
 
 
