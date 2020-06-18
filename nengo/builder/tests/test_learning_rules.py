@@ -1,4 +1,3 @@
-import nengo
 import pytest
 
 from nengo.builder.learning_rules import SimVoja, build_learning_rule

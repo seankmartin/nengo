@@ -1,4 +1,3 @@
-import nengo
 import pytest
 
 from nengo.builder.node import build_node

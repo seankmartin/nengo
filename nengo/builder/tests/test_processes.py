@@ -1,7 +1,4 @@
-import numpy as np
-
 import pytest
-import nengo
 from nengo.builder.processes import SimProcess
 
 

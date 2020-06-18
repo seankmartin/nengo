@@ -230,9 +230,9 @@ def test_weakkeyiddict_iter_functions():
         "2)",
         "3)",
     ]
-    for i in range(len(results)):
-        assert str(results[i]).startswith(start)
-        assert str(results[i]).endswith(end[i])
+    for i, value in enumerate(results):
+        assert str(value).startswith(start)
+        assert str(value).endswith(end[i])
 
 
 def test_weakkeyiddict_update_kwargs():

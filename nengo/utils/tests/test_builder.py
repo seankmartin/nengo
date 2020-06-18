@@ -60,15 +60,13 @@ def test_full_transform():
             contents = [1, 2, 3]
             size_in = 1
 
-        class FakeDense(Dense):
+        class FakeDense:
             def __init__(self):
-                pass
-
-            shape = (1, 1)
-            init = np.array([[[1], [2], [3]]])
+                self.init = np.array([[[1], [2], [3]]])
+                self.shape = (1, 1)
 
         class Test2:
-            transform = FakeDense()  # Dense((1, 1), init=9)
+            transform = FakeDense()
             function = 0
             post_slice = []
             pre_slice = []
