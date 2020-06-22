@@ -38,6 +38,7 @@ def test_blockconjgrad_validationerror():
 
 def test_svd():
     """tests SVD"""
+    pytest.importorskip("sklearn")
     mySVD = SVD()
     A = np.array([[1], [2], [3]])
     Y = np.array([1, 2, 3])
@@ -52,6 +53,7 @@ def test_svd():
 
 def test_randsvd():
     """tests RandomizedSVD"""
+    pytest.importorskip("sklearn")
     mySVD = RandomizedSVD()
     A = np.array([[1], [2], [3]])
     Y = np.array([1, 2, 3])
