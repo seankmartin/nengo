@@ -25,7 +25,8 @@ def test_config_repr():
     with model:
         assert (
             repr(model.config) == "<Config(Connection, Ensemble, Node, Probe)>"
-            or repr(model.config) == "<Config(Connection, Ensemble, Probe, Node)>"
+            or repr(model.config)
+            == "<Config(Ensemble, Connection, Probe, Node)>"  # travis-ci version
         )
 
 

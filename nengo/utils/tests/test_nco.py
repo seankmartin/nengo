@@ -1,10 +1,10 @@
 import os
 
-import numpy as np
-from numpy.testing import assert_equal
 import pytest
 import struct
 
+import numpy as np
+from numpy.testing import assert_equal
 import nengo.utils.nco as nco
 from nengo.exceptions import CacheIOError
 from nengo.utils.nco import Subfile
