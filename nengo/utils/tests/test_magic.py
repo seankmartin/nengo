@@ -18,14 +18,15 @@ def test_decorator():
         def myMethod(self):
             pass
 
-    # TODO: debug some stuff about the decorator, since lines 263-265 arent run
+    # TODO: debug some stuff about the decorator
+    # since lines 263-265 aren't being run
     # wrapped = Test()
     # wrapped.myMethod()
-    # Cant figure out how to get instance to be None
+    # Can't figure out how to get instance to be None
 
 
 def test_objectproxymethods():
-    """tests funcions of ObjectProxyMethods"""
+    """tests functions of ObjectProxyMethods"""
     my_obj = ObjectProxyMethods()
 
     class Test:
@@ -42,11 +43,12 @@ def test_objectproxymethods():
 
 
 def test_objectproxy():
-    """tests funcions of ObjectProxy"""
+    """tests functions of ObjectProxy"""
 
     class Test:
         __module__ = None
         __dict__ = None
+        test = 1
 
     my_proxy = ObjectProxy(Test())
     assert (
@@ -55,14 +57,19 @@ def test_objectproxy():
         " '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__',"
         " '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__',"
         " '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__',"
-        " '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']"
+        " '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__',"
+        " '__weakref__', 'test']"
     )
-    # how do I test for hash?
+
     my_proxy = ObjectProxy(Test())
     assert hash(my_proxy) == hash(my_proxy)
 
-    my_proxy.test = 1
     assert my_proxy.test == 1
+    my_proxy.__wrapped__.test += 1
+    my_proxy.__wrapped__ = None  # there is a slots pylint error when trying to set
+    # an attribute not named __wrapped__
+    assert my_proxy.test == 2
+    assert my_proxy.__wrapped__.__wrapped__ is None
 
     instance = ObjectProxy(1)
     assert str(instance) == "1"
@@ -71,7 +78,7 @@ def test_objectproxy():
 
 
 def test_boundfunctionwrapper():
-    """tests funcions of BoundFunctionWrapper"""
+    """tests functions of BoundFunctionWrapper"""
 
     class MyParentHelper:
         def __get__(self, a, b=None):

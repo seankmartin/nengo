@@ -3,6 +3,7 @@ import os
 import numpy as np
 from numpy.testing import assert_equal
 import pytest
+import struct
 
 import nengo.utils.nco as nco
 from nengo.exceptions import CacheIOError
@@ -29,12 +30,19 @@ class TestSubfile:
 
     def test_cacheioerror_when_caching_wrong_file(self, data, testfile):
         class FakeFile:
-            def read(self, a):
-                return bytes(20)
+            byte_number = 40
 
-        myfakefile = FakeFile()
+            def __init__(self, byte_number):
+                self.byte_number = byte_number
+
+            def read(self, a):
+                return bytes(self.byte_number)  # return bytes(40) for travis-ci
+
         with pytest.raises(CacheIOError):
-            nco.read(myfakefile)
+            try:
+                nco.read(FakeFile(40))
+            except struct.error:
+                nco.read(FakeFile(20))
 
     def test_reads_only_from_start_to_end(self, data, testfile):
         with testfile.open() as f:

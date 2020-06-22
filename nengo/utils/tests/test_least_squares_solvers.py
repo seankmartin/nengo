@@ -45,6 +45,8 @@ def test_svd():
     assert (
         repr(mySVD(A, Y, sigma)) == "(array([1.]), {'rmses': "
         "array([6.69210662e-16])})"
+        or repr(mySVD(A, Y, sigma)) == "(array([1.]), {'rmses': "
+        "array([0.])})"  # travis-ci version
     )
 
 
@@ -57,4 +59,6 @@ def test_randsvd():
     assert (
         repr(mySVD(A, Y, sigma)) == "(array([[1.]]), {'rmses': "
         "array([6.69210662e-16])})"
+        or repr(mySVD(A, Y, sigma)) == "(array([[1.]]), {'rmses': "
+        "array([0.])})"  # travis-ci version
     )
