@@ -125,18 +125,12 @@ class ObjectProxy(metaclass=ObjectProxyMeta):
         return dir(self.__wrapped__)
 
     def __getattr__(self, key):
-        import warnings
-
-        warnings.warn("gettin attr")
         return getattr(self.__wrapped__, key)
 
     def __hash__(self):
         return hash(self.__wrapped__)
 
     def __setattr__(self, key, value):
-        import warnings
-
-        warnings.warn("settin attr")
         setattr(self.__wrapped__, key, value)
 
     def __str__(self):

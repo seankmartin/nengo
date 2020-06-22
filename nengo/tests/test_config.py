@@ -23,7 +23,10 @@ def test_config_repr():
     """tests the repr function in Config class"""
     model = nengo.Network()
     with model:
-        assert repr(model.config) == "<Config(Connection, Ensemble, Node, Probe)>"
+        assert (
+            repr(model.config) == "<Config(Connection, Ensemble, Node, Probe)>"
+            or repr(model.config) == "<Config(Connection, Ensemble, Probe, Node)>"
+        )
 
 
 def test_config_exit():

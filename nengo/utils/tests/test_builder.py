@@ -5,7 +5,7 @@ import pytest
 
 import nengo
 from nengo.exceptions import MovedError, ValidationError, Unconvertible
-from nengo.transforms import NoTransform, Dense
+from nengo.transforms import NoTransform
 from nengo.utils.builder import (
     full_transform,
     generate_graphviz,

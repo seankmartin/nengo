@@ -230,9 +230,14 @@ def test_weakkeyiddict_iter_functions():
         "2)",
         "3)",
     ]
+    end2 = [  # ending for travis-ci
+        "2)",
+        "3)",
+        "4)",
+    ]
     for i, value in enumerate(results):
         assert str(value).startswith(start)
-        assert str(value).endswith(end[i])
+        assert str(value).endswith(end[i]) or str(value).endswith(end2[i])
 
 
 def test_weakkeyiddict_update_kwargs():
