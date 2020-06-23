@@ -231,9 +231,9 @@ def test_weakkeyiddict_iter_functions():
         "3)",
     ]
     end2 = [  # ending for travis-ci
-        "2)",
-        "1)",
         "3)",
+        "1)",
+        "2)",
     ]
     for i, value in enumerate(results):
         assert str(value).startswith(start)
