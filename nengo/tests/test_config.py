@@ -27,6 +27,8 @@ def test_config_repr():
             repr(model.config) == "<Config(Connection, Ensemble, Node, Probe)>"
             or repr(model.config)
             == "<Config(Ensemble, Connection, Probe, Node)>"  # travis-ci version
+            or repr(model.config)
+            == "<Config(Probe, Ensemble, Connection, Node)>"  # also travis-ci version
         )
 
 
