@@ -22,14 +22,16 @@ def test_classparams_repr():
 def test_config_repr():
     """tests the repr function in Config class"""
     model = nengo.Network()
-    with model:
+    with model:  # == "<Config(Connection, Ensemble, Node, Probe)>
         assert (
-            repr(model.config) == "<Config(Connection, Ensemble, Node, Probe)>"
-            or repr(model.config)
-            == "<Config(Ensemble, Connection, Probe, Node)>"  # travis-ci version
-            or repr(model.config)
-            == "<Config(Probe, Ensemble, Connection, Node)>"  # also travis-ci version
+            repr(model.config).startswith("<Config(")
+            and repr(model.config).endswith(")>")
+            and "Connection" in repr(model.config)
+            and "Ensemble" in repr(model.config)
+            and "Node" in repr(model.config)
+            and "Probe" in repr(model.config)
         )
+        # travis-ci has it in any order
 
 
 def test_config_exit():
