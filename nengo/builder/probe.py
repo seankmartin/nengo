@@ -64,7 +64,7 @@ def signal_probe(model, key, probe):
 
 probemap = {
     Ensemble: {"decoded_output": None, "input": "in", "scaled_encoders": "encoders"},
-    Neurons: {"output": None, "spikes": None, "rates": None, "input": "in"},
+    Neurons: {"output": None, "input": "in"},
     Node: {"output": None},
     Connection: {"output": "weighted", "input": "in"},
     LearningRule: {},  # make LR signals probeable, but no mapping required
